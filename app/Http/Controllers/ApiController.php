@@ -20,8 +20,8 @@ class ApiController extends Controller
         } 
         else{ 
             return response()->withHeaders([
-                'Content-Type' => 'application/json',
-                'Access-Control-Allow-Origin' => '*',
+                'Access-Control-Allow-Origin', '*',
+                'Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'
             ])->json(['error'=>'Unauthorised'], 401); 
         } 
     }
