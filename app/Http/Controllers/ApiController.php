@@ -19,7 +19,10 @@ class ApiController extends Controller
             return response()->json(['success' => $success], $this-> successStatus); 
         } 
         else{ 
-            return response()->json(['error'=>'Unauthorised'], 401); 
+            return response()->withHeaders([
+                'Content-Type' => 'application/json',
+                'Access-Control-Allow-Origin' => '*',
+            ])->json(['error'=>'Unauthorised'], 401); 
         } 
     }
 
