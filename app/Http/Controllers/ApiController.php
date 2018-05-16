@@ -21,22 +21,22 @@ class ApiController extends Controller
 
         if ($validator->fails()) { 
             return response()->json(['error'=>$validator->errors()], 401);            
-        } else {
-            if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
-                $user = Auth::user(); 
-                $success['token'] =  $user->createToken('washrobe')->accessToken; 
-                return response()->json(['success' => $success], $this-> successStatus)->withHeaders([
-                    'Access-Control-Allow-Origin', '*',
-                    'Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'
-                ]); 
-            } 
-            else{ 
-                return response()->json(['error'=>'Unauthorised'], 401)->withHeaders([
-                    'Access-Control-Allow-Origin', '*',
-                    'Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'
-                ]); 
-            } 
         }
+
+        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
+            $user = Auth::user(); 
+            $success['token'] =  $user->createToken('washrobe')->accessToken; 
+            return response()->json(['success' => $success], $this-> successStatus)->withHeaders([
+                'Access-Control-Allow-Origin', '*',
+                'Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'
+            ]); 
+        } 
+        else{ 
+            return response()->json(['error'=>'Unauthorised'], 401)->withHeaders([
+                'Access-Control-Allow-Origin', '*',
+                'Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'
+            ]); 
+        } 
     }
 
     public function register(Request $request) 
