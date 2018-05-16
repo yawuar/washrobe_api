@@ -12,6 +12,6 @@ class WardrobeController extends Controller
     {
         $categories = Wardrobe::get();
 
-        return response()->json(['data' => $categories]); 
+        return response()->json(['data' => $categories], 200); 
     }
 }
