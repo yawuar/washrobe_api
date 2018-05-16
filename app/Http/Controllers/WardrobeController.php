@@ -8,10 +8,23 @@ use App\Wardrobe;
 
 class WardrobeController extends Controller
 {
-    public function categories() 
+    public function categories(Request $request) 
     {
-        $categories = Wardrobe::get();
 
-        return response()->json(['data' => $categories], 200); 
+        $gender = $request['gender'];
+        $categories = Wardrobe::get();
+        $newCategory = [];
+        foreach($categories as $value) {
+            $arr = explode(',', $value['gender']);
+            if(count($arr) > 1) {
+                array_push($newCategory, $value);
+            } else if(count($arr) == 1) {
+                if($arr[0] == $gender) {
+                    array_push($newCategory, $value);
+                }
+            }
+        }
+
+        return response()->json(['data' => $newCategory], 200); 
     }
 }

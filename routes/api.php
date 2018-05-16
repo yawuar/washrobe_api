@@ -22,5 +22,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('user', 'ApiController@getUser');
 
     // return all the categories
-    Route::post('wardrobe', 'WardrobeController@categories');
+    // Route::post('wardrobe', 'WardrobeController@categories');
 });
+
+Route::post('wardrobe', 'WardrobeController@categories');
