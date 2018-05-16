@@ -17,5 +17,10 @@ Route::post('login', 'ApiController@login');
 Route::post('register', 'ApiController@register');
 
 Route::group(['middleware' => 'auth:api'], function(){
+
+    // return user information
     Route::get('user', 'ApiController@getUser');
+
+    // return all the categories
+    Route::get('wardrobe', 'WardrobeController@categories');
 });
