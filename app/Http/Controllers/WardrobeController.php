@@ -14,7 +14,7 @@ class WardrobeController extends Controller
         $categories = Wardrobe::get();
         $newCategory = [];
 
-        return response()->json(['data' => $gender]);
+        return response()->json(['data' => $request->all()]);
 
         foreach($categories as $value) {
             $arr = explode(',', $value['gender']);
