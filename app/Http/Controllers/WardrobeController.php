@@ -10,10 +10,12 @@ class WardrobeController extends Controller
 {
     public function categories(Request $request) 
     {
-
         $gender = $request['gender'];
         $categories = Wardrobe::get();
         $newCategory = [];
+
+        return response()->json(['data' => $gender]);
+
         foreach($categories as $value) {
             $arr = explode(',', $value['gender']);
             if(count($arr) > 1) {
