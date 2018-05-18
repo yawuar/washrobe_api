@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Wardrobe;
+use App\Item;
 
 class WardrobeController extends Controller
 {
@@ -13,8 +14,6 @@ class WardrobeController extends Controller
         $gender = $request['gender'];
         $categories = Wardrobe::get();
         $newCategory = [];
-
-        return response()->json($request['data']);
 
         foreach($categories as $value) {
             $arr = explode(',', $value['gender']);
@@ -28,5 +27,10 @@ class WardrobeController extends Controller
         }
 
         return response()->json(['data' => $newCategory], 200); 
+    }
+
+    public function category($id) {
+        $items = Item::where('categoryID', $id)->get();
+        return response()->json(['data' => $items], 200); 
     }
 }

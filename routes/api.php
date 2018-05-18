@@ -24,3 +24,5 @@ Route::group(['middleware' => 'auth:api'], function(){
     // return all the categories
     Route::post('wardrobe', 'WardrobeController@categories');
 });
+
+Route::get('wardrobe/{id}', 'WardrobeController@category');
