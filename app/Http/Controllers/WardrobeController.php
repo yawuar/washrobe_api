@@ -33,4 +33,9 @@ class WardrobeController extends Controller
         $items = Item::where('categoryID', $id)->get();
         return response()->json(['data' => $items], 200); 
     }
+
+    public function delete($id) {
+        $items = Item::where('id', $id)->delete();
+        return response()->json(['data' => $items], 200); 
+    }
 }
