@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; 
 
 use App\Wardrobe;
 use App\Item;
+use App\User;
 
 class WardrobeController extends Controller
 {
@@ -30,7 +32,8 @@ class WardrobeController extends Controller
     }
 
     public function category($id) {
-        $items = Item::where('categoryID', $id)->get();
+        $user = Auth::user();
+        $items = User::find($user['id'])->items;
         return response()->json(['data' => $items], 200); 
     }
 
