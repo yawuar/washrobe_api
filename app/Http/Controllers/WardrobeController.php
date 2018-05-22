@@ -38,7 +38,9 @@ class WardrobeController extends Controller
     }
 
     public function delete($id) {
-        $items = Item::where('id', $id)->delete();
-        return response()->json(['data' => $items], 200); 
+        $user = Auth::user();
+        $item = User::find($user['id'])->items()->detach($id);
+        // $items = Item::where('id', $id)->delete();
+        return response()->json(['data' => $item], 200); 
     }
 }
