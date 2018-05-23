@@ -26,11 +26,7 @@ class ApiController extends Controller
         if(Auth::attempt(['email' => $request['email'], 'password' => $request['password']])){ 
             $user = Auth::user(); 
             $success['token'] =  $user->createToken('washrobe')->accessToken; 
-            return response()->json(['success' => $success], $this-> successStatus)->withHeaders([
-                'Access-Control-Allow-Origin', '*',
-                'Access-Control-Allow-Headers', 'origin, x-requested-with, content-type',
-                'Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'
-            ]); 
+            return response()->json(['success' => $success], $this-> successStatus);
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401);
@@ -64,10 +60,6 @@ class ApiController extends Controller
     public function getUser() 
     { 
         $user = Auth::user(); 
-        return response()->json(['success' => $user], $this->successStatus)->withHeaders([
-            'Access-Control-Allow-Origin', '*',
-            'Access-Control-Allow-Headers', 'origin, x-requested-with, content-type',
-            'Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'
-        ]); 
+        return response()->json(['success' => $user], $this->successStatus);
     } 
 }
