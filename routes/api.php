@@ -25,4 +25,6 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::post('wardrobe', 'WardrobeController@categories');
     Route::post('wardrobe/{id}', 'WardrobeController@category');
     Route::delete('wardrobe/{id}', 'WardrobeController@delete');
+
+    Route::post('item/{id}', 'ItemController@addItemToUser');
 });
