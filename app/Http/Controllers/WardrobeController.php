@@ -17,17 +17,22 @@ class WardrobeController extends Controller
         $categories = Wardrobe::get();
         $newCategory = [];
 
+        $user = Auth::user();
+        $items = [];
+
         foreach($categories as $value) {
             $arr = explode(',', $value['gender']);
             if(count($arr) > 1) {
+                $value['amount'] = count(User::find($user['id'])->items->where('categoryID', $value['id']));
                 array_push($newCategory, $value);
             } else if(count($arr) == 1) {
                 if($arr[0] == $gender) {
+                    $value['amount'] = count(User::find($user['id'])->items->where('categoryID', $value['id']));
                     array_push($newCategory, $value);
                 }
             }
         }
-
+        
         return response()->json(['data' => $newCategory], 200); 
     }
 
