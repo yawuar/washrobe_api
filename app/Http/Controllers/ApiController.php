@@ -23,6 +23,8 @@ class ApiController extends Controller
             return response()->json(['error'=>$validator->errors()], 401);            
         }
 
+        // check if user email exists - NICE TO HAVE
+
         if(Auth::attempt(['email' => $request['email'], 'password' => $request['password']])){ 
             $user = Auth::user(); 
             $success['token'] =  $user->createToken('washrobe')->accessToken; 

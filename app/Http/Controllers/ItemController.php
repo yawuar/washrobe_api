@@ -19,7 +19,7 @@ class ItemController extends Controller
             // attach itemID to user_item table
             $addedUser = User::find($user['id'])->items()->attach($item_id);
         } catch(\Illuminate\Database\QueryException $ex) {
-            // when query fails, return false
+            // when query fails, return a false
             $addedUser = false;
         }
 

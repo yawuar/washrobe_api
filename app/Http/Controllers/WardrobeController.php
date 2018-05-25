@@ -33,7 +33,7 @@ class WardrobeController extends Controller
 
     public function category($id) {
         $user = Auth::user();
-        $items = User::find($user['id'])->items;
+        $items = User::find($user['id'])->items->where('categoryID', $id);
         return response()->json(['data' => $items], 200); 
     }
 
