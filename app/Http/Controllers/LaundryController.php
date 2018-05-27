@@ -29,12 +29,25 @@ class LaundryController extends Controller
         foreach($categories as $value) {
             $arr = explode(',', $value['gender']);
             if(count($arr) > 1) {
-                // $value['amount'] = count(User::find($user['id'])->items->where('categoryID', $value['id']));
+                $items = Laundry::get();
+                $count = 0;
+                foreach($items as $item) {
+                    if(count(User::find($user['id'])->items->where('categoryID', $value['id'])->where('pivot.id', $item['user_itemID'])) > 0) {
+                        $count++;
+                    }
+                }
+                $value['amount'] = $count;
                 array_push($newCategory, $value);
             } else if(count($arr) == 1) {
                 if($arr[0] == $gender) {
-                    // $value['amount'] = count(User::find($user['id'])->items->where('categoryID', $value['id']));
-                    array_push($newCategory, $value);
+                    $items = Laundry::get();
+                    $count = 0;
+                    foreach($items as $item) {
+                        if(count(User::find($user['id'])->items->where('categoryID', $value['id'])->where('pivot.id', $item['user_itemID'])) > 0) {
+                            $count++;
+                        }
+                    }
+                    $value['amount'] = $count;
                 }
             }
         }
