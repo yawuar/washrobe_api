@@ -23,7 +23,6 @@ class LaundryController extends Controller
         // if there is only one item add in db
         if($length == 1) {
             $pivotID = $items[0]->pivot->id;
-            
             $checkIfIsLaundry = Laundry::where('user_itemID', $pivotID)->get();
             if(count($checkIfIsLaundry) > 0) {
                 $message = 'This item is already in the laundry';
@@ -43,6 +42,7 @@ class LaundryController extends Controller
                     } else {
                         Laundry::create(['user_itemID' => $pivotID]);
                         $message = 'The item is successfully added to the laundry';
+                        break;
                     }
                 }
             } else {
@@ -51,6 +51,5 @@ class LaundryController extends Controller
         }
 
         return response()->json(['data' => $message]);
-        // $laundry = Laundry::
     }
 }
