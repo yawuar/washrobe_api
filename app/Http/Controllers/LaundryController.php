@@ -33,7 +33,7 @@ class LaundryController extends Controller
                 array_push($newCategory, $value);
             } else if(count($arr) == 1) {
                 if($arr[0] == $gender) {
-                    $value['amount'] = count(User::find($user['id'])->items->where('categoryID', $value['id']));
+                    // $value['amount'] = count(User::find($user['id'])->items->where('categoryID', $value['id']));
                     array_push($newCategory, $value);
                 }
             }
