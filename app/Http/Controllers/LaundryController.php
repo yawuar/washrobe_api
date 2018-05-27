@@ -17,8 +17,11 @@ class LaundryController extends Controller
 
         $message = 'false';
 
+        $index = 0;
+        $length = count($items);
+
         // if there is only one item add in db
-        if(count($items) == 1) {
+        if($length == 1) {
             $pivotID = $items[0]->pivot->id;
             
             $checkIfIsLaundry = Laundry::where('user_itemID', $pivotID)->get();
@@ -30,10 +33,8 @@ class LaundryController extends Controller
             }
         }
         
-        if(count($items) > 1) {
-            $index = 0;
-            $length = count($items);
-            if($index < $length) {
+        if($length > 1) {
+            if($index <= $length) {
                 for($i = 0; $i < $length; $i++) {
                     $pivotID = $items[$index]->pivot->id;
                     $checkIfIsLaundry = Laundry::where('user_itemID', $pivotID)->get();
