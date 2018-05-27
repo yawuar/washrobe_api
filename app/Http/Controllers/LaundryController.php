@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 
 use App\User;
-
+use App\Wardrobe;
 use App\Laundry;
 
 class LaundryController extends Controller
