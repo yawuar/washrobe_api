@@ -11,6 +11,12 @@ use App\Laundry;
 
 class LaundryController extends Controller
 {
+
+    public function getLaundryByCategory() {
+        $items = Laundry::get();
+        return response()->json(['data' => $items]);
+    }
+
     public function putInLaundry($id) {
         $user = Auth::user();
         $items = User::find($user['id'])->items()->where('item_id', $id)->get();

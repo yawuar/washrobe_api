@@ -28,5 +28,6 @@ Route::group(['middleware' => ['auth:api']], function(){
 
     Route::post('item/{item_id}', 'ItemController@addItemToUser');
 
+    Route::post('laundry', 'LaundryController@getLaundry');
     Route::post('laundry/{id}', 'LaundryController@putInLaundry');
 });
