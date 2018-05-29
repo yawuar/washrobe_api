@@ -96,4 +96,19 @@ class LaundryController extends Controller
 
         return response()->json(['data' => $message]);
     }
+
+    public function getLaundryById($id) {
+        $user = Auth::user();
+        $items = [];
+
+        $laundry = Laundry::get();
+        foreach($laundry as $laundryItem) {
+            $item = User::find($user['id'])->items->where('categoryID', $id)->where('pivot.id', $laundryItem['user_itemID'])->first();
+            if($item != null) {
+                array_push($items,$item);
+            }
+        }
+
+        return response()->json(['data' => $items]);
+    }
 }
