@@ -116,4 +116,20 @@ class LaundryController extends Controller
         $laundry = Laundry::where('user_itemID', $id)->delete();
         return response()->json(['data' => $laundry]);
     }
+
+    public function getLaundryByUser() {
+        $user = Auth::user();
+
+        $items = [];
+
+        $laundry = Laundry::get();
+        foreach($laundry as $laundryItem) {
+            $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+            if($item != null) {
+                array_push($items, $item);
+            }
+        }
+
+        return response()->json(['data' => count($items)]);
+    }
 }
