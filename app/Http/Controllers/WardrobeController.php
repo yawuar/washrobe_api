@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Wardrobe;
 use App\Item;
 use App\User;
+use App\UserItem;
 
 class WardrobeController extends Controller
 {
@@ -44,7 +45,8 @@ class WardrobeController extends Controller
 
     public function delete($id) {
         $user = Auth::user();
-        $item = User::find($user['id'])->items()->wherePivot('id', '=', $id)->detach();
+        // $item = User::find($user['id'])->items()->wherePivot('id', '=', $id)->detach();
+        $item = UserItem::where('id', $id)->delete();
 
         return response()->json(['data' => $item], 200); 
     }
