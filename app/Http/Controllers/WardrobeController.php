@@ -24,11 +24,11 @@ class WardrobeController extends Controller
         foreach($categories as $value) {
             $arr = explode(',', $value['gender']);
             if(count($arr) > 1) {
-                $value['amount'] = count(User::find($user['id'])->items->where('categoryID', $value['id']));
+                $value['amount'] = count(User::find($user['id'])->items()->where('categoryID', $value['id'])->wherePivot('deleted_at', null)->get());
                 array_push($newCategory, $value);
             } else if(count($arr) == 1) {
                 if($arr[0] == $gender) {
-                    $value['amount'] = count(User::find($user['id'])->items->where('categoryID', $value['id']));
+                    $value['amount'] = count(User::find($user['id'])->items()->where('categoryID', $value['id'])->wherePivot('deleted_at', null)->get());
                     array_push($newCategory, $value);
                 }
             }
@@ -44,9 +44,7 @@ class WardrobeController extends Controller
     }
 
     public function delete($id) {
-        $user = Auth::user();
         $item = UserItem::where('id', $id)->delete();
-
         return response()->json(['data' => $item], 200); 
     }
 }
