@@ -39,7 +39,7 @@ class WardrobeController extends Controller
 
     public function category($id) {
         $user = Auth::user();
-        $items = User::find($user['id'])->items->where('categoryID', $id);
+        $items = User::find($user['id'])->items->where('categoryID', $id)->where('pivot.deleted_at', null);
         return response()->json(['data' => $items], 200); 
     }
 
