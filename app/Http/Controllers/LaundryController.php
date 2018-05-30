@@ -111,4 +111,9 @@ class LaundryController extends Controller
 
         return response()->json(['data' => $items]);
     }
+
+    public function deleteLaundryById($id) {
+        $laundry = Laundry::where('user_itemID', $id)->delete();
+        return response()->json(['data' => $laundry]);
+    }
 }

@@ -45,7 +45,6 @@ class WardrobeController extends Controller
 
     public function delete($id) {
         $user = Auth::user();
-        // $item = User::find($user['id'])->items()->wherePivot('id', '=', $id)->detach();
         $item = UserItem::where('id', $id)->delete();
 
         return response()->json(['data' => $item], 200); 
