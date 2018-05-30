@@ -22,14 +22,14 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::post('user', 'ApiController@getUser');
 
     // return all the categories
-    Route::post('', 'WardrobeController@categories');
-    Route::post('{id}', 'WardrobeController@category');
-    Route::delete('{id}', 'WardrobeController@delete');
+    Route::post('wardrobe/', 'WardrobeController@categories');
+    Route::post('wardrobe/{id}', 'WardrobeController@category');
+    Route::delete('wardrobe/{id}', 'WardrobeController@delete');
 
     Route::post('item/{item_id}', 'ItemController@addItemToUser');
 
-    Route::post('', 'LaundryController@categories');
-    Route::post('{id}', 'LaundryController@putInLaundry');
-    Route::delete('{id}', 'LaundryController@deleteLaundryById');
-    Route::post('item/{id}', 'LaundryController@getLaundryById');
+    Route::post('laundry', 'LaundryController@categories');
+    Route::post('laundry/{id}', 'LaundryController@putInLaundry');
+    Route::delete('laundry/{id}', 'LaundryController@deleteLaundryById');
+    Route::post('laundry/item/{id}', 'LaundryController@getLaundryById');
 });
