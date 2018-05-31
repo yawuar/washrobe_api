@@ -16,6 +16,6 @@ class Item extends Model
     ];
 
     public function symbols() {
-        return $this->belongsToMany('App\Symbol', 'symbol_id', 'item_id', 'symbol_id');
+        return $this->belongsToMany('App\Symbol', 'item_symbol', 'item_id', 'symbol_id');
     }
 }

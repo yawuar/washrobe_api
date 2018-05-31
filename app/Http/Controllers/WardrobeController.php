@@ -38,8 +38,13 @@ class WardrobeController extends Controller
     }
 
     public function category($id) {
+        // Add symbols to item
         $user = Auth::user();
+        // $items = User::find($user['id'])->items()->get();
         $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->get();
+        for($i = 0; $i < count($items); $i++) {
+            $items[$i]['symbols'] = $items[$i]->symbols;
+        }
         return response()->json(['data' => $items], 200); 
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Wardrobe;
 use App\Laundry;
+use App\Item;
 
 class LaundryController extends Controller
 {
@@ -151,6 +152,15 @@ class LaundryController extends Controller
         // get all laundry 
         $laundry = Laundry::get();
 
+        $clothing = Item::get();
+        $arr = [];
+
+        foreach($clothing as $cloth) {
+            // var_dump($cloth);
+            // array_push($arr, $cloth);
+            array_push($arr, $cloth->symbols()->get());
+        }
+
         // loop through all laundry items
         foreach($laundry as $laundryItem) {
             // get all items that belongs to the authenticated user
@@ -170,6 +180,6 @@ class LaundryController extends Controller
             }
         }
 
-        return response()->json(['data' => $clothesColors]);
+        return response()->json(['data' => $arr]);
     }
 }
