@@ -14,4 +14,8 @@ class Item extends Model
     protected $fillable = [
         'name', 'brand', 'color', 'material', 'style', 'symbols', 'price', 'image', 'categoryID'
     ];
+
+    public function symbols() {
+        return $this->belongsToMany('App\Symbol', 'symbol_id', 'item_id', 'symbol_id');
+    }
 }
