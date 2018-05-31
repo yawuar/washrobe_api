@@ -36,5 +36,7 @@ Route::group(['middleware' => ['auth:api']], function(){
         Route::post('{id}', 'LaundryController@putInLaundry');
         Route::delete('{id}', 'LaundryController@deleteLaundryById');
         Route::post('item/{id}', 'LaundryController@getLaundryById');
+
+        Route::post('items/sort', 'LaundryController@sort');
     });
 });

@@ -132,4 +132,44 @@ class LaundryController extends Controller
 
         return response()->json(['data' => count($items)]);
     }
+
+    public function sort() {
+
+        // get authenticated user
+        $user = Auth::user();
+
+        // keep an array to save all items
+        $items = [];
+
+        // array to sort all laundry by color
+        $clothesColors = [
+            'white' => [],
+            'black' =>[],
+            'coloured' => []
+        ];
+
+        // get all laundry 
+        $laundry = Laundry::get();
+
+        // loop through all laundry items
+        foreach($laundry as $laundryItem) {
+            // get all items that belongs to the authenticated user
+            $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+            $colors = explode(',', $item['color']);
+            if(count($colors) > 1) {
+                $coloured = $colors[0];
+                if($coloured == 'coloured') {
+                    array_push($clothesColors[$coloured], $item);
+                }
+            }
+
+            if(count($colors) <= 1) {
+                if($item['color']) {
+                    array_push($clothesColors[$item['color']], $item);
+                }
+            }
+        }
+
+        return response()->json(['data' => $clothesColors]);
+    }
 }
