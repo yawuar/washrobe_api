@@ -104,9 +104,11 @@ class LaundryController extends Controller
 
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
-            $item = User::find($user['id'])->items->where('categoryID', $id)->where('pivot.id', $laundryItem['user_itemID'])->first();
-            if($item != null) {
-                array_push($items,$item);
+            $laundryItem = User::find($user['id'])->items->where('categoryID', $id)->where('pivot.id', $laundryItem['user_itemID'])->first();
+            if($laundryItem != null) {
+                $laundryItem['symbols'] = $laundryItem->symbols;
+                array_push($items,$laundryItem);
+
             }
         }
 
