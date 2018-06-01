@@ -136,11 +136,7 @@ class LaundryController extends Controller
         return response()->json(['data' => count($items)]);
     }
 
-    public function sort() {
-
-        // get authenticated user
-        $user = Auth::user();
-
+    private function sortLaundryBycolor($user) {
         // keep an array to save all items
         $items = [];
 
@@ -155,18 +151,12 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
 
         $clothing = Item::get();
-        $arr = [];
-
-        foreach($clothing as $cloth) {
-            // var_dump($cloth);
-            // array_push($arr, $cloth);
-            array_push($arr, $cloth->symbols()->get());
-        }
 
         // loop through all laundry items
         foreach($laundry as $laundryItem) {
             // get all items that belongs to the authenticated user
             $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+            $item['symbols'] = $item->symbols;
             $colors = explode(',', $item['color']);
             if(count($colors) > 1) {
                 $coloured = $colors[0];
@@ -182,6 +172,31 @@ class LaundryController extends Controller
             }
         }
 
-        return response()->json(['data' => $arr]);
+        return $clothesColors;
+    }
+
+    public function sort() {
+
+        // get authenticated user
+        $user = Auth::user();
+
+        // sort clothes by color
+        $itemSortedByColor = $this->sortLaundryBycolor($user);
+
+        // loop through temperature
+        foreach($itemSortedByColor['white'] as $itemColor) {
+            foreach($itemColor['symbols'] as $symbol) {
+                $symbolsInfo = explode(',', $symbol['info']);
+                if(count($symbolsInfo) > 1) {
+                    if(in_array('wash', $symbolsInfo)) {
+                        if(preg_match('~[0-9]~', $symbolsInfo[1])) {
+                            var_dump($symbolsInfo[1]);
+                        }
+                    }
+                }
+            }
+        }
+
+        // return response()->json(['data' => $itemSortedByColor]);
     }
 }
