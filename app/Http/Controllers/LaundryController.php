@@ -183,20 +183,39 @@ class LaundryController extends Controller
         // sort clothes by color
         $itemSortedByColor = $this->sortLaundryBycolor($user);
 
+        $arr = [];
+
+        $clothesColors = [
+            'wash' => [
+                30 => [],
+                40 => [],
+                50 => [],
+                60 => [],
+                70 => [],
+                95 => [],
+            ],
+            'hand-wash' => [
+                30 => [],
+                40 => [],
+            ]
+        ];
+
         // loop through temperature
-        foreach($itemSortedByColor['white'] as $itemColor) {
-            foreach($itemColor['symbols'] as $symbol) {
-                $symbolsInfo = explode(',', $symbol['info']);
-                if(count($symbolsInfo) > 1) {
-                    if(in_array('wash', $symbolsInfo)) {
-                        if(preg_match('~[0-9]~', $symbolsInfo[1])) {
-                            var_dump($symbolsInfo[1]);
-                        }
+        foreach($itemSortedByColor as $key => $value) {
+            foreach($itemSortedByColor[$key] as $symbol) {
+                foreach($symbol['symbols'] as $sym) {
+                    if($sym['type'] == 'wash' && $sym['degrees'] == 30) {
+                        array_push($clothesColors[$sym['type']][$sym['degrees']], $symbol['id']);
+                    }
+
+                    if($sym['type'] == 'hand-wash' && $sym['degrees'] == 40) {
+                        array_push($clothesColors[$sym['type']][$sym['degrees']], $symbol['id']);
                     }
                 }
+
             }
         }
 
-        // return response()->json(['data' => $itemSortedByColor]);
+        return response()->json(['data' => $clothesColors]);
     }
 }
