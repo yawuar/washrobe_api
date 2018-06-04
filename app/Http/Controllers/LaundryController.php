@@ -188,14 +188,14 @@ class LaundryController extends Controller
                 }
                 foreach($symbol['symbols'] as $sym) {
                     if($sym['type'] == 'wash' || $sym['type'] == 'hand-wash') {
-                        if(!isset($itemsSortedByDegrees[$key][$sym['type']])) {
+                        if(!isset($itemsSortedByDegrees[$key][$sym['type']]) && !isset($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']]) && !isset($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']][$symbol['material']])) {
                             $itemsSortedByDegrees[$key][$sym['type']] = [];
                             $itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']] = [];
+                            $itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']][$symbol['material']] = [];
                         }
 
-                        if(isset($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']])) {
-                            array_push($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']], $symbol['id']);
-                            array_push($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']], $symbol['material']);
+                        if(isset($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']][$symbol['material']])) {
+                            array_push($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']][$symbol['material']], $symbol['id']);
                         }
                     }
                 }
