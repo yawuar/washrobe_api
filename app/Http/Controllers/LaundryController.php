@@ -12,6 +12,20 @@ use App\Item;
 
 class LaundryController extends Controller
 {
+    private $laundryArr = [
+            'white' => [
+                'wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],],
+                'hand-wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],]
+            ],
+            'black' =>[
+                'wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],],
+                'hand-wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],]
+            ],
+            'coloured' => [
+                'wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],],
+                'hand-wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],]
+            ]
+    ];
 
     public function getLaundryByCategory() {
         $items = Laundry::get();
@@ -136,78 +150,24 @@ class LaundryController extends Controller
         return response()->json(['data' => count($items)]);
     }
 
-    private function sortLaundryBycolor() {
-        // keep an array to save all items
+    public function sort() {
+        $arr = $this->laundryArr;
         $user = Auth::user();
-        $items = [];
 
-        // array to sort all laundry by color
-        $clothesColors = [
-            'white' => [],
-            'black' =>[],
-            'coloured' => []
-        ];
-
-        // get all laundry 
         $laundry = Laundry::get();
-
-        $clothing = Item::get();
-
-        // loop through all laundry items
         foreach($laundry as $laundryItem) {
-            // get all items that belongs to the authenticated user
             $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
             $item['symbols'] = $item->symbols;
-            $colors = explode(',', $item['color']);
-            if(count($colors) > 1) {
-                $coloured = $colors[0];
-                if($coloured == 'coloured') {
-                    array_push($clothesColors[$coloured], $item);
-                }
-            }
 
-            if(count($colors) <= 1) {
-                if($item['color']) {
-                    array_push($clothesColors[$item['color']], $item);
+            $color = explode(',', $item['color'])[0];
+
+            foreach($item['symbols'] as $symbol) {
+                if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                    array_push($arr[$color][$symbol['type']][$symbol['degrees']], $item['id']);
                 }
             }
         }
 
-        return $clothesColors;
-    }
-
-    private function sortLaundryByDegrees() {
-        $itemSortedByColor = $this->sortLaundryBycolor();
-
-        $itemsSortedByDegrees = [];
-
-        foreach($itemSortedByColor as $key => $value) {
-            foreach($itemSortedByColor[$key] as $symbol) {
-                if(!isset($itemsSortedByDegrees[$key])) {
-                    $itemsSortedByDegrees[$key] = [];
-                }
-                foreach($symbol['symbols'] as $sym) {
-                    if($sym['type'] == 'wash' || $sym['type'] == 'hand-wash') {
-                        if(!isset($itemsSortedByDegrees[$key][$sym['type']]) && !isset($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']]) && !isset($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']][$symbol['material']])) {
-                            $itemsSortedByDegrees[$key][$sym['type']] = [];
-                            $itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']] = [];
-                            $itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']][$symbol['material']] = [];
-                        }
-
-                        if(isset($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']][$symbol['material']])) {
-                            array_push($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']][$symbol['material']], $symbol['id']);
-                        }
-                    }
-                }
-            }
-        }
-
-        return $itemsSortedByDegrees;
-    }
-
-    public function sort() {
-        $itemSortedByColor = $this->sortLaundryByDegrees();
-
-        return response()->json(['data' => $itemSortedByColor]);
+        return response()->json(['data' => $arr]);
     }
 }
