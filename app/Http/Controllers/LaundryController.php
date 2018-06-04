@@ -136,8 +136,9 @@ class LaundryController extends Controller
         return response()->json(['data' => count($items)]);
     }
 
-    private function sortLaundryBycolor($user) {
+    private function sortLaundryBycolor() {
         // keep an array to save all items
+        $user = Auth::user();
         $items = [];
 
         // array to sort all laundry by color
@@ -175,47 +176,38 @@ class LaundryController extends Controller
         return $clothesColors;
     }
 
-    public function sort() {
+    private function sortLaundryByDegrees() {
+        $itemSortedByColor = $this->sortLaundryBycolor();
 
-        // get authenticated user
-        $user = Auth::user();
+        $itemsSortedByDegrees = [];
 
-        // sort clothes by color
-        $itemSortedByColor = $this->sortLaundryBycolor($user);
-
-        $arr = [];
-
-        $clothesColors = [
-            'wash' => [
-                30 => [],
-                40 => [],
-                50 => [],
-                60 => [],
-                70 => [],
-                95 => [],
-            ],
-            'hand-wash' => [
-                30 => [],
-                40 => [],
-            ]
-        ];
-
-        // loop through temperature
         foreach($itemSortedByColor as $key => $value) {
             foreach($itemSortedByColor[$key] as $symbol) {
+                if(!isset($itemsSortedByDegrees[$key])) {
+                    $itemsSortedByDegrees[$key] = [];
+                }
                 foreach($symbol['symbols'] as $sym) {
-                    if($sym['type'] == 'wash' && $sym['degrees'] == 30) {
-                        array_push($clothesColors[$sym['type']][$sym['degrees']], $symbol['id']);
-                    }
+                    if($sym['type'] == 'wash' || $sym['type'] == 'hand-wash') {
+                        if(!isset($itemsSortedByDegrees[$key][$sym['type']])) {
+                            $itemsSortedByDegrees[$key][$sym['type']] = [];
+                            $itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']] = [];
+                        }
 
-                    if($sym['type'] == 'hand-wash' && $sym['degrees'] == 40) {
-                        array_push($clothesColors[$sym['type']][$sym['degrees']], $symbol['id']);
+                        if(isset($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']])) {
+                            array_push($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']], $symbol['id']);
+                            array_push($itemsSortedByDegrees[$key][$sym['type']][$sym['degrees']], $symbol['material']);
+                        }
                     }
                 }
-
             }
         }
 
-        return response()->json(['data' => $clothesColors]);
+        return $itemsSortedByDegrees;
+    }
+
+    public function sort() {
+        $itemSortedByColor = $this->sortLaundryByDegrees();
+
+        return response()->json(['data' => $itemSortedByColor]);
     }
 }
