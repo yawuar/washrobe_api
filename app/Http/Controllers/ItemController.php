@@ -28,10 +28,10 @@ class ItemController extends Controller
             $addedUser = false;
         }
 
-        return response()->json([[
+        return response()->json([
             'success' => $addedUser, 
             'data' => $item
-        ]]);
+        ]);
     }
 
     public function encodeItem($item_id) {
