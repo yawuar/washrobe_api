@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth:api']], function(){
     });
 
     Route::post('item/{item_id}', 'ItemController@addItemToUser');
+    Route::post('item/hash/{item_id}', 'ItemController@encodeItem');
 
     Route::prefix('laundry')->group(function () {
         Route::post('', 'LaundryController@categories');
