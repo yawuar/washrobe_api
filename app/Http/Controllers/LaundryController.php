@@ -13,18 +13,14 @@ use App\Item;
 class LaundryController extends Controller
 {
     private $laundryArr = [
-            'white' => [
-                'wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],],
-                'hand-wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],]
-            ],
-            'black' =>[
-                'wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],],
-                'hand-wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],]
-            ],
-            'coloured' => [
-                'wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],],
-                'hand-wash' => ['30' => [], '40' => [], '50' => [], '60' => [], '70' => [], '95' => [],]
-            ]
+        'information' => [
+
+        ],
+        'laundry' => [
+            'white' => [],
+            'black' => [],
+            'coloured' => []
+        ]
     ];
 
     public function getLaundryByCategory() {
@@ -150,7 +146,7 @@ class LaundryController extends Controller
         return response()->json(['data' => count($items)]);
     }
 
-    public function sort() {
+    private function addTypeAndDegrees() {
         $arr = $this->laundryArr;
         $user = Auth::user();
 
@@ -158,12 +154,48 @@ class LaundryController extends Controller
         foreach($laundry as $laundryItem) {
             $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
             $item['symbols'] = $item->symbols;
-
             $color = explode(',', $item['color'])[0];
-
             foreach($item['symbols'] as $symbol) {
                 if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
-                    array_push($arr[$color][$symbol['type']][$symbol['degrees']], $item['id']);
+                    $arr['laundry'][$color][$symbol['type']][$symbol['degrees']] = [];
+                }
+            }
+        }
+        return $arr;
+    }
+
+    private function addMaterialToDegrees() {
+        $arr = $this->addTypeAndDegrees();
+        $user = Auth::user();
+
+        $laundry = Laundry::get();
+        foreach($laundry as $laundryItem) {
+            $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+            $item['symbols'] = $item->symbols;
+            $color = explode(',', $item['color'])[0];
+            
+            foreach($item['symbols'] as $symbol) {
+                if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                    $arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']] = [];
+                }
+            }
+        }
+        return $arr;
+    }
+
+    public function sort() {
+        $arr = $this->addMaterialToDegrees();
+        $user = Auth::user();
+
+        $laundry = Laundry::get();
+        foreach($laundry as $laundryItem) {
+            $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+            $item['symbols'] = $item->symbols;
+            $color = explode(',', $item['color'])[0];
+            
+            foreach($item['symbols'] as $symbol) {
+                if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                    array_push($arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']], $item['id']);
                 }
             }
         }
