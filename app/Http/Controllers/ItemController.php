@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 use Hashids\Hashids;
 use App\User;
+use App\Item;
 
 use DB;
 
@@ -39,5 +40,10 @@ class ItemController extends Controller
         $hashids = new Hashids('appelblauwzeegroen', 10);
         $hash = $hashids->encode($item_id);
         return response()->json(['data' => $hash]);
+    }
+
+    public function getItemById($item_id) {
+        $item = Item::where('id', $item_id)->get();
+        return response()->json(['data' => $item]);
     }
 }

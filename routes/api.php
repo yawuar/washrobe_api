@@ -28,8 +28,11 @@ Route::group(['middleware' => ['auth:api']], function(){
         Route::delete('{id}', 'WardrobeController@delete');
     });
 
-    Route::post('item/{item_id}', 'ItemController@addItemToUser');
-    Route::post('item/hash/{item_id}', 'ItemController@encodeItem');
+    Route::prefix('item')->group(function () {
+        Route::post('{item_id}', 'ItemController@addItemToUser');
+        Route::post('hash/{item_id}', 'ItemController@encodeItem');
+        Route::post('get/{item_id}', 'ItemController@getItemById');
+    });
 
     Route::prefix('laundry')->group(function () {
         Route::post('', 'LaundryController@categories');
