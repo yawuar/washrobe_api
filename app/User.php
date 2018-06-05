@@ -29,6 +29,6 @@ class User extends Authenticatable
     ];
 
     public function items() {
-        return $this->belongsToMany('App\Item', 'user_item', 'user_id', 'item_id')->withPivot('id', 'deleted_at');
+        return $this->belongsToMany('App\Item', 'user_item', 'user_id', 'item_id')->withPivot('id', 'deleted_at')->withTimestamps();
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Hashids\Hashids;
 use App\User;
 
+use DB;
+
 class ItemController extends Controller
 {
     public function addItemToUser($item_id) {
@@ -20,12 +22,16 @@ class ItemController extends Controller
         try {
             // attach itemID to user_item table
             $addedUser = User::find($user['id'])->items()->attach($id);
+            $item = DB::table('user_item')->where('user_id', $user['id'])->orderBy('created_at', 'desc')->first();
         } catch(\Illuminate\Database\QueryException $ex) {
             // when query fails, return a false
             $addedUser = false;
         }
 
-        return response()->json(['data' => $addedUser]);
+        return response()->json([[
+            'success' => $addedUser, 
+            'data' => $item
+        ]]);
     }
 
     public function encodeItem($item_id) {

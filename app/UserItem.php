@@ -9,6 +9,7 @@ class UserItem extends Model
 {
     use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = 'user_item';
 
     protected $fillable = [
