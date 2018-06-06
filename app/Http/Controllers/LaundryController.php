@@ -173,12 +173,14 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
             $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
-            $item['symbols'] = $item->symbols;
-            $color = explode(',', $item['color'])[0];
-            
-            foreach($item['symbols'] as $symbol) {
-                if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
-                    $arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']] = [];
+            if(isset($item->symbols)) {
+                $item['symbols'] = $item->symbols;
+                $color = explode(',', $item['color'])[0];
+                
+                foreach($item['symbols'] as $symbol) {
+                    if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                        $arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']] = [];
+                    }
                 }
             }
         }
@@ -193,12 +195,14 @@ class LaundryController extends Controller
         foreach($laundry as $laundryItem) {
             $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
             $obj = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
-            $item['symbols'] = $item->symbols;
-            $color = explode(',', $item['color'])[0];
-            
-            foreach($item['symbols'] as $symbol) {
-                if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
-                    array_push($arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']], $obj);
+
+            if(isset($item->symbols)) {
+                $item['symbols'] = $item->symbols;
+                $color = explode(',', $item['color'])[0];
+                foreach($item['symbols'] as $symbol) {
+                    if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                        array_push($arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']], $obj);
+                    }
                 }
             }
         }
