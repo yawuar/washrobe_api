@@ -21,6 +21,8 @@ Route::group(['middleware' => ['auth:api']], function(){
     // return user information
     Route::post('user', 'ApiController@getUser');
 
+    Route::post('coinwash', 'CoinWashController@getCoinWash');
+
     // return all the categories
     Route::prefix('wardrobe')->group(function () {
         Route::post('', 'WardrobeController@categories');
