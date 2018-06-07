@@ -63,5 +63,11 @@ class ApiController extends Controller
     { 
         $user = Auth::user(); 
         return response()->json(['success' => $user], $this->successStatus);
-    } 
+    }
+
+    public function logout(Request $request)
+    { 
+        $revoke = $request->user()->token()->revoke();
+        return response()->json(['data' => $revoke]);
+    }
 }

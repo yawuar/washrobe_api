@@ -21,6 +21,8 @@ Route::group(['middleware' => ['auth:api']], function(){
     // return user information
     Route::post('user', 'ApiController@getUser');
 
+    Route::post('logout','ApiController@logout');
+
     Route::post('coinwash', 'CoinWashController@getCoinWash');
 
     // return all the categories
