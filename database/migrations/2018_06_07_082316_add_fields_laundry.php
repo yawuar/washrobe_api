@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFieldsSymbols extends Migration
+class AddFieldsLaundry extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AddFieldsSymbols extends Migration
      */
     public function up()
     {
-        Schema::table('symbols', function (Blueprint $table) {
-            $table->string('type');
-            $table->integer('degrees');
-            $table->string('volume');
+        Schema::table('laundry', function (Blueprint $table) {
+            $table->boolean('isWashed');
+            $table->integer('coin_wash_id');
         });
     }
 
@@ -27,6 +26,6 @@ class AddFieldsSymbols extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('symbols');
+        Schema::dropIfExists('laundry');
     }
 }
