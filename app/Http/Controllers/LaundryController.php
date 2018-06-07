@@ -114,11 +114,13 @@ class LaundryController extends Controller
 
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
+            if(!$laundryItem['isWashed']) {
             $laundryItem = User::find($user['id'])->items->where('categoryID', $id)->where('pivot.id', $laundryItem['user_itemID'])->first();
-            if($laundryItem != null) {
-                $laundryItem['symbols'] = $laundryItem->symbols;
-                array_push($items,$laundryItem);
+                if($laundryItem != null) {
+                    $laundryItem['symbols'] = $laundryItem->symbols;
+                    array_push($items,$laundryItem);
 
+                }
             }
         }
 
@@ -137,9 +139,11 @@ class LaundryController extends Controller
 
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
-            $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
-            if($item != null) {
-                array_push($items, $item);
+            if(!$laundryItem['isWashed']) {
+                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+                if($item != null) {
+                    array_push($items, $item);
+                }
             }
         }
 
@@ -152,13 +156,15 @@ class LaundryController extends Controller
 
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
-            $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
-            if(isset($item->symbols)) {
-                $item['symbols'] = $item->symbols;
-                $color = explode(',', $item['color'])[0];
-                foreach($item['symbols'] as $symbol) {
-                    if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
-                        $arr['laundry'][$color][$symbol['type']][$symbol['degrees']] = [];
+            if(!$laundryItem['isWashed']) {
+                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+                if(isset($item->symbols)) {
+                    $item['symbols'] = $item->symbols;
+                    $color = explode(',', $item['color'])[0];
+                    foreach($item['symbols'] as $symbol) {
+                        if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                            $arr['laundry'][$color][$symbol['type']][$symbol['degrees']] = [];
+                        }
                     }
                 }
             }
@@ -172,14 +178,16 @@ class LaundryController extends Controller
 
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
-            $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
-            if(isset($item->symbols)) {
-                $item['symbols'] = $item->symbols;
-                $color = explode(',', $item['color'])[0];
-                
-                foreach($item['symbols'] as $symbol) {
-                    if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
-                        $arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']] = [];
+            if(!$laundryItem['isWashed']) {
+                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+                if(isset($item->symbols)) {
+                    $item['symbols'] = $item->symbols;
+                    $color = explode(',', $item['color'])[0];
+                    
+                    foreach($item['symbols'] as $symbol) {
+                        if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                            $arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']] = [];
+                        }
                     }
                 }
             }
@@ -193,15 +201,17 @@ class LaundryController extends Controller
 
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
-            $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
-            $obj = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+            if(!$laundryItem['isWashed']) {
+                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+                $obj = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
 
-            if(isset($item->symbols)) {
-                $item['symbols'] = $item->symbols;
-                $color = explode(',', $item['color'])[0];
-                foreach($item['symbols'] as $symbol) {
-                    if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
-                        array_push($arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']], $obj);
+                if(isset($item->symbols)) {
+                    $item['symbols'] = $item->symbols;
+                    $color = explode(',', $item['color'])[0];
+                    foreach($item['symbols'] as $symbol) {
+                        if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                            array_push($arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']], $obj);
+                        }
                     }
                 }
             }
