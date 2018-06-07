@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Coinwash;
+use App\CoinWash;
 
 class CoinWashController extends Controller
 {
