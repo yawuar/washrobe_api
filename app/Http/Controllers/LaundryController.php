@@ -219,4 +219,9 @@ class LaundryController extends Controller
 
         return response()->json(['data' => $arr]);
     }
+
+    public function updateWashCoinId($id) {
+        $washroom = Laundry::where('isWashed', 0)->update(['coin_wash_id' => $id]);
+        return response()->json(['data' => $washroom]);
+    }
 }

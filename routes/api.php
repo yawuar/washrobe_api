@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth:api']], function(){
         Route::post('', 'LaundryController@categories');
         Route::post('get', 'LaundryController@getLaundryByUser');
         Route::post('{id}', 'LaundryController@putInLaundry');
+        Route::put('{id}', 'LaundryController@updateWashCoinId');
         Route::delete('{id}', 'LaundryController@deleteLaundryById');
         Route::post('item/{id}', 'LaundryController@getLaundryById');
 
