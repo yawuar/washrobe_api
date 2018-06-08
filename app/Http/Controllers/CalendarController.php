@@ -17,6 +17,6 @@ class CalendarController extends Controller
             $calendarItems = User::find($userId)->items()->wherePivot('id', $item['user_itemID'])->first();
         }
 
-        return response()->json(['data' => $items]);
+        return response()->json(['data' => $calendarItems]);
     }
 }
