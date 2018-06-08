@@ -48,4 +48,8 @@ Route::group(['middleware' => ['auth:api']], function(){
 
         Route::post('items/sort', 'LaundryController@sort');
     });
+
+    Route::prefix('calendar')->group(function () {
+        Route::post('{id}', 'CalendarController@getClothesOfUserByDay');
+    });
 });
