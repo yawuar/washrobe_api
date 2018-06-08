@@ -10,10 +10,8 @@ use App\User;
 class CalendarController extends Controller
 {
     public function getClothesOfUserByDay($day) {
-        $date = str_replace("_"," ",$day);
-
         $userId = Auth::user()['id'];
-        $items = CalendarItem::whereDate('created_at', $date)->get();
+        $items = CalendarItem::whereDate('created_at', $day)->get();
 
         foreach($items as $item) {
             $calendarItems = User::find($userId)->items()->wherePivot('id', $item['user_itemID'])->first();
