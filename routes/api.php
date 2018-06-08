@@ -50,6 +50,6 @@ Route::group(['middleware' => ['auth:api']], function(){
     });
 
     Route::prefix('calendar')->group(function () {
-        Route::post('{id}', 'CalendarController@getClothesOfUserByDay');
+        Route::post('{day}', 'CalendarController@getClothesOfUserByDay');
     });
 });
