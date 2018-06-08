@@ -13,13 +13,12 @@ class CalendarController extends Controller
         $date = str_replace("_"," ",$day);
 
         $userId = Auth::user()['id'];
-
-        $items = CalendarItem::where('created_at', $date)->get();
+        $items = CalendarItem::whereDate('created_at', $date)->get();
 
         foreach($items as $item) {
             $calendarItems = User::find($userId)->items()->wherePivot('id', $item['user_itemID'])->first();
         }
 
-        return response()->json(['data' => $calendarItems]);
+        return response()->json(['data' => $items]);
     }
 }
