@@ -17,7 +17,10 @@ class CalendarController extends Controller
 
         if(count($items) > 0) {
             foreach($items as $item) {
-                $calendarItems = User::find($userId)->items()->wherePivot('id', $item['user_itemID'])->first();
+                $userItem = User::find($userId)->items()->wherePivot('id', $item['user_itemID'])->first();
+                if($userItem != null) {
+                    array_push($calendarItems, $userItem);
+                }
             }
         }
 
