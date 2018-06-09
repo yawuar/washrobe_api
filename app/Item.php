@@ -18,4 +18,8 @@ class Item extends Model
     public function symbols() {
         return $this->belongsToMany('App\Symbol', 'item_symbol', 'item_id', 'symbol_id');
     }
+
+    public function wardrobe() {
+        return $this->belongsTo('App\Wardrobe', 'categoryID');
+    }
 }
