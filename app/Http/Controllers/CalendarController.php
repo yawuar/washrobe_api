@@ -12,7 +12,7 @@ class CalendarController extends Controller
 {
     public function getClothesOfUserByDay($day) {
         $userId = Auth::user()['id'];
-        $items = CalendarItem::whereDate('created_at', $day)->get();
+        $items = CalendarItem::whereDate('date', $day)->get();
 
         $calendarItems = [];
 
