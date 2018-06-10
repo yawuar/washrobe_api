@@ -117,24 +117,46 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
-            $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->where('user_item.id', $laundryItem['user_itemID'])->first();
-            if(!in_array($laundryItem, $items)) {
+                $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->where('user_item.id', $laundryItem['user_itemID'])->first();
                 if($laundryItem != null) {
-                    $laundryItem['amountOfItems'] = 1;
-                    $laundryItem['symbols'] = $laundryItem->symbols;
-                    array_push($items,$laundryItem);
+                    if(!in_array($laundryItem, $items)){
+                        $bool = $this->checkIfInArray($laundryItem, $items);
+                        if(!$bool) {
+                            $laundryItem['amountOfItems'] = 1;
+                            $laundryItem['symbols'] = $laundryItem->symbols;
+                            array_push($items, $laundryItem);
+                        } else {
+                            // var_dump($laundryItem['id']);
+                            $key = $this->returnKey($laundryItem, $items);
+                            if($key > -1) {
+                                $items[$key]['amountOfItems'] += 1;
+                            }   
+                        }
+                    }
                 }
-            }
-            
-            if(in_array($laundryItem, $items)) {
-                $key = array_search($laundryItem, $items);
-                $items[$key]['amountOfItems'] += 1;
-            }
 
-        }
+            }
         }
 
         return response()->json(['data' => $items]);
+    }
+
+    private function checkIfInArray($entry, $array) {
+        foreach ($array as $compare) {
+            if ($compare->id == $entry->id) {
+                return true;
+            }
+        return false;
+        }
+    }
+
+    private function returnKey($entry, $array) {
+        foreach ($array as $key => $value) {
+            if ($value->id == $value->id) {
+                return $key;
+            }
+            return -1;
+        }
     }
 
     public function deleteLaundryById($id) {
