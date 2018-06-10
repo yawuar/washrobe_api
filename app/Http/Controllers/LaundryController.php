@@ -10,6 +10,8 @@ use App\Wardrobe;
 use App\Laundry;
 use App\Item;
 
+use DB;
+
 class LaundryController extends Controller
 {
     private $laundryArr = [
@@ -115,11 +117,11 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
-            $laundryItem = User::find($user['id'])->items->where('categoryID', $id)->where('pivot.id', $laundryItem['user_itemID'])->first();
+            $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->where('user_item.id', $laundryItem['user_itemID'])->orderBy('item_id')->select('*', DB::raw('COUNT(*) as amountOfItems'))->groupBy('item_id')->first();
+            // $laundryItem = User::find($user['id'])->items->where('categoryID', $id)->where('pivot.id', $laundryItem['user_itemID'])->first();
                 if($laundryItem != null) {
                     $laundryItem['symbols'] = $laundryItem->symbols;
                     array_push($items,$laundryItem);
-
                 }
             }
         }
