@@ -28,4 +28,9 @@ class CalendarController extends Controller
 
         return response()->json(['data' => $calendarItems]);
     }
+
+    public function addClothToCalendar(Request $request) {
+        $calendarItem = CalendarItem::create($request->all());
+        return response()->json(['data' => $calendarItem]);
+    }
 }

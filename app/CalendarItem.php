@@ -12,6 +12,6 @@ class CalendarItem extends Model
     protected $table = 'calendar_items';
 
     protected $fillable = [
-        'user_itemID'
+        'user_itemID', 'date'
     ];
 }
