@@ -10,6 +10,8 @@ use App\Item;
 use App\User;
 use App\UserItem;
 
+use DB;
+
 class WardrobeController extends Controller
 {
     public function categories(Request $request) 
@@ -40,8 +42,8 @@ class WardrobeController extends Controller
     public function category($id) {
         // Add symbols to item
         $user = Auth::user();
-        // $items = User::find($user['id'])->items()->get();
-        $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->get();
+        // $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->select('*', DB::raw('COUNT(*) as amountOfItems'))->groupBy('item_id')->having('amountOfItems', '>' , 1)->wherePivot('deleted_at', null)->get();
+        $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->orderBy('items.id')->select('*', DB::raw('COUNT(*) as amountOfItems'))->groupBy('item_id')->get();
         for($i = 0; $i < count($items); $i++) {
             $items[$i]['symbols'] = $items[$i]->symbols;
         }
