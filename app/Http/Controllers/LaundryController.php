@@ -72,7 +72,7 @@ class LaundryController extends Controller
         $user = Auth::user();
         $items = User::find($user['id'])->items()->where('item_id', $id)->get();
 
-        $message = 'false';
+        $message = [];
 
         $index = 0;
         $length = count($items);
@@ -82,10 +82,16 @@ class LaundryController extends Controller
             $pivotID = $items[0]->pivot->id;
             $checkIfIsLaundry = Laundry::where('user_itemID', $pivotID)->get();
             if(count($checkIfIsLaundry) > 0) {
-                $message = 'This item is already in the laundry';
+                array_push($message, [
+                    'message' => 'This item is already in the laundry',
+                    'alreadyInLaundry' => true
+                ]);
             } else {
                 Laundry::create(['user_itemID' => $pivotID]);
-                $message = 'The item is successfully added to the laundry';
+                array_push($message, [
+                    'message' => 'The item is successfully added to the laundry',
+                    'alreadyInLaundry' => false
+                ]);
             }
         }
         
@@ -98,16 +104,22 @@ class LaundryController extends Controller
                         $index++;
                     } else {
                         Laundry::create(['user_itemID' => $pivotID]);
-                        $message = 'The item is successfully added to the laundry';
+                        array_push($message, [
+                            message => 'The item is successfully added to the laundry',
+                            alreadyInLaundry => false
+                        ]);
                         break;
                     }
                 }
             } else {
-                $message = 'All these items are already in the laundry';
+                array_push($message, [
+                    message => 'This item is already in the laundry',
+                    alreadyInLaundry => true
+                ]);
             }
         }
 
-        return response()->json(['data' => $message]);
+        return response()->json(['data' => $message[0]]);
     }
 
     public function getLaundryById($id) {
