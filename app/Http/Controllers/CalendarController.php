@@ -33,4 +33,23 @@ class CalendarController extends Controller
         $calendarItem = CalendarItem::create($request->all());
         return response()->json(['data' => $calendarItem]);
     }
+
+    public function removeItemFromCalendar(Request $request) {
+        var_dump($request->all());
+        $uiID = $request['user_itemID'];
+        $date = $request['date'];
+
+        $item = CalendarItem::where('user_itemID', $uiID)->where('date', $date)->first();
+        
+        if($item) {
+            $item->delete();
+        }
+
+        if(!$item) {
+            $item = false;
+        }
+
+        return response()->json(['data' =>$item ]);
+
+    }
 }
