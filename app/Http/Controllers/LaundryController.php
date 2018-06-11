@@ -100,7 +100,6 @@ class LaundryController extends Controller
                 for($i = 0; $i < $length; $i++) {
                     $pivotID = $items[$index]->pivot->id;
                     $checkIfIsLaundry = Laundry::where('user_itemID', $pivotID)->get();
-                    var_dump(count($checkIfIsLaundry));
                     if(count($checkIfIsLaundry) > 0) {
                         $index++;
                     } else {
@@ -140,7 +139,6 @@ class LaundryController extends Controller
                             $laundryItem['symbols'] = $laundryItem->symbols;
                             array_push($items, $laundryItem);
                         } else {
-                            // var_dump($laundryItem['id']);
                             $key = $this->returnKey($laundryItem, $items);
                             if($key > -1) {
                                 $items[$key]['amountOfItems'] += 1;
