@@ -119,7 +119,7 @@ class LaundryController extends Controller
             }
         }
 
-        return response()->json(['data' => $message[0]]);
+        return response()->json(['data' => $message]);
     }
 
     public function getLaundryById($id) {
