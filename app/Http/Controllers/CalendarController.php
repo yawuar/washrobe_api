@@ -41,6 +41,7 @@ class CalendarController extends Controller
 
         $item = CalendarItem::where('user_itemID', $uiID)->where('date', $date)->first();
         
+        var_dump('hallo');
         if($item) {
             $item->delete();
         }
