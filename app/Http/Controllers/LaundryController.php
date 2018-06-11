@@ -70,7 +70,7 @@ class LaundryController extends Controller
 
     public function putInLaundry($id) {
         $user = Auth::user();
-        $items = User::find($user['id'])->items()->where('item_id', $id)->get();
+        $items = User::find($user['id'])->items()->where('item_id', $id)->wherePivot('deleted_at', null)->get();
         $message = [];
 
         $index = 0;
@@ -94,6 +94,7 @@ class LaundryController extends Controller
             }
         }
         
+        // If there are more
         if($length > 1) {
             if($index <= $length) {
                 for($i = 0; $i < $length; $i++) {
@@ -108,12 +109,13 @@ class LaundryController extends Controller
                             'message' => 'The item is successfully added to the laundry',
                             'alreadyInLaundry' => false
                         ]);
-                        break;
                     }
                 }
-            } else {
+            } 
+
+            if($index >= $length) {
                 array_push($message, [
-                    'message' => 'This item is already in the laundry',
+                    'message' => 'All the items are already in the laundry',
                     'alreadyInLaundry' => true
                 ]);
             }
