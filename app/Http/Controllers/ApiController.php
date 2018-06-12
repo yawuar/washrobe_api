@@ -70,4 +70,14 @@ class ApiController extends Controller
         $revoke = $request->user()->token()->revoke();
         return response()->json(['data' => $revoke]);
     }
+
+    public function getUserByEmail(Request $request) {
+        $isUser = false;
+        $user = User::where('email', $request->all()['email'])->get();
+        if(count($user) > 0) {
+            $isUser = true;
+        }
+
+        return response()->json(['isValidUser' => $isUser]);
+    }
 }

@@ -16,7 +16,7 @@ class LaundryController extends Controller
 {
     private $laundryArr = [
         'information' => [
-
+            
         ],
         'laundry' => [
             'white' => [],
