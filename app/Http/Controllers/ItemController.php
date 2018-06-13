@@ -14,15 +14,13 @@ class ItemController extends Controller
 {
     public function addItemToUser($item_id) {
         $user = Auth::user();
-        $hashids = new Hashids('appelblauwzeegroen', 10);
-        $id = $hashids->decode($item_id);
 
         // because attach method only returns a NULL
         // I have to try and catch this for security reasons
         // So, if there is something wrong with the query it returns a boolean
         try {
             // attach itemID to user_item table
-            $addedUser = User::find($user['id'])->items()->attach($id);
+            $addedUser = User::find($user['id'])->items()->attach($item_id);
             $item = DB::table('user_item')->where('user_id', $user['id'])->orderBy('created_at', 'desc')->first();
         } catch(\Illuminate\Database\QueryException $ex) {
             // when query fails, return a false
