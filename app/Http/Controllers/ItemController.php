@@ -46,4 +46,12 @@ class ItemController extends Controller
         $item = Item::where('id', $item_id)->get();
         return response()->json(['data' => $item]);
     }
+
+    public function getItemByHash($hash) {
+        $hashids = new Hashids('appelblauwzeegroen', 10);
+        $id = $hashids->decode($hash);
+
+        $item = Item::where('id', $id)->get();
+        return response()->json(['data' => $item]);
+    }
 }
