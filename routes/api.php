@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth:api']], function(){
         Route::post('', 'WardrobeController@categories');
         Route::post('{id}', 'WardrobeController@category');
         Route::delete('{id}', 'WardrobeController@delete');
+        Route::post('get/{id}', 'WardrobeController@getItemById');
     });
 
     Route::prefix('item')->group(function () {

@@ -49,6 +49,12 @@ class WardrobeController extends Controller
         return response()->json(['data' => $items], 200); 
     }
 
+    public function getItemById($id) {
+        $user = Auth::user();
+        $item = User::find($user['id'])->items()->wherePivot('id', $id)->get();
+        return response()->json(['data' => $item], 200); 
+    }
+
     public function delete($id) {
         $item = UserItem::where('id', $id)->delete();
         return response()->json(['data' => $item], 200); 
