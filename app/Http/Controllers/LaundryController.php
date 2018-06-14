@@ -206,7 +206,7 @@ class LaundryController extends Controller
                     $item['symbols'] = $item->symbols;
                     $color = explode(',', $item['color'])[0];
                     foreach($item['symbols'] as $symbol) {
-                        if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                        if($symbol['type'] == 'machine' || $symbol['type'] == 'hand-wash') {
                             $arr['laundry'][$color][$symbol['type']][$symbol['degrees']] = [];
                         }
                     }
@@ -229,7 +229,7 @@ class LaundryController extends Controller
                     $color = explode(',', $item['color'])[0];
                     
                     foreach($item['symbols'] as $symbol) {
-                        if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                        if($symbol['type'] == 'machine' || $symbol['type'] == 'hand-wash') {
                             $arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']] = [];
                         }
                     }
@@ -253,7 +253,7 @@ class LaundryController extends Controller
                     $item['symbols'] = $item->symbols;
                     $color = explode(',', $item['color'])[0];
                     foreach($item['symbols'] as $symbol) {
-                        if($symbol['type'] == 'wash' || $symbol['type'] == 'hand-wash') {
+                        if($symbol['type'] == 'machine' || $symbol['type'] == 'hand-wash') {
                             array_push($arr['laundry'][$color][$symbol['type']][$symbol['degrees']][$item['material']], $obj);
                         }
                     }
