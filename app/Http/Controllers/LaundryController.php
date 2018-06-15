@@ -245,10 +245,10 @@ class LaundryController extends Controller
         $user = Auth::user();
 
         $laundry = Laundry::get();
-
+        var_dump($laundry[0]['coin_wash_id']);
         if($laundry[0]['coin_wash_id'] != 0) {
-            $coin_wash = CoinWash::where('id', $laundry[0]['coin_wash_id'])->first();
-            array_push($this->laundryArr, $coin_wash);
+            $coin_wash = CoinWash::where('id', $laundry[0]['coin_wash_id'])->get()->first();
+            array_push($arr['information'], $coin_wash);
         }
 
         foreach($laundry as $laundryItem) {
