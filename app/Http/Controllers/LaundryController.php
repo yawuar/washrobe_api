@@ -244,6 +244,12 @@ class LaundryController extends Controller
         $user = Auth::user();
 
         $laundry = Laundry::get();
+
+        if($laundry[0]['coin_wash_id'] != 0) {
+            $coin_wash = CoinWash::where('id', $laundry[0]['coin_wash_id'])->first();
+            array_push($this->laundryArr, $coin_wash);
+        }
+
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
                 $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
