@@ -9,6 +9,7 @@ use App\User;
 use App\Wardrobe;
 use App\Laundry;
 use App\Item;
+use App\CoinWash;
 
 use DB;
 
