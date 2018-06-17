@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth:api']], function(){
         Route::post('item/{id}', 'LaundryController@getLaundryById');
 
         Route::post('items/sort', 'LaundryController@sort');
+        Route::post('count/machines', 'LaundryController@countMachines');
     });
 
     Route::prefix('calendar')->group(function () {
