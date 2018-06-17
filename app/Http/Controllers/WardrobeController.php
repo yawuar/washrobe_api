@@ -42,8 +42,11 @@ class WardrobeController extends Controller
     public function category($id) {
         // Add symbols to item
         $user = Auth::user();
-        $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->orderBy('items.id')->select('*', DB::raw('COUNT(*) as amountOfItems'))->groupBy('item_id')->get();
+        $itemsAmount = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->orderBy('items.id')->select('*', DB::raw('COUNT(*) as amountOfItems'))->groupBy('item_id')->get();
+        $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->get();
         for($i = 0; $i < count($items); $i++) {
+            // var_dump($items[$i]->symbols);
+            $items[$i]['amountOfItems'] = $itemsAmount[$i]['amountOfItems'];
             $items[$i]['symbols'] = $items[$i]->symbols;
         }
         return response()->json(['data' => $items], 200); 

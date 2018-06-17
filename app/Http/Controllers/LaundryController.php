@@ -137,7 +137,6 @@ class LaundryController extends Controller
                         $bool = $this->checkIfInArray($laundryItem, $items);
                         if(!$bool) {
                             $laundryItem['amountOfItems'] = 1;
-                            $laundryItem['symbols'] = $laundryItem->symbols;
                             array_push($items, $laundryItem);
                         } else {
                             $key = $this->returnKey($laundryItem, $items);
