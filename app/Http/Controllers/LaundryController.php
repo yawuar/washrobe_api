@@ -269,8 +269,8 @@ class LaundryController extends Controller
         return response()->json(['data' => $arr]);
     }
 
-    public function countMachines(Request $request) {
-        var_dump($request->all());
-        // return response()->json(['data' => $request->all()]);
+    public function updateIsWashed($id) {
+        $item = Laundry::where('id', $id)->update(['isWashed' => 1]);
+        return response()->json(['data' => $item]);
     }
 }
