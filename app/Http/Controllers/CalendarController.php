@@ -30,9 +30,8 @@ class CalendarController extends Controller
     }
 
     public function addClothToCalendar(Request $request) {
-        var_dump($request->all());
-        // $calendarItem = CalendarItem::create($request->all());
-        // return response()->json(['data' => $calendarItem]);
+        $calendarItem = CalendarItem::create($request->all());
+        return response()->json(['data' => $calendarItem]);
     }
 
     public function removeItemFromCalendar(Request $request) {
