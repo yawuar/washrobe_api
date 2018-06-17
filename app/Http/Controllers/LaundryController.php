@@ -46,8 +46,10 @@ class LaundryController extends Controller
                 $items = Laundry::get();
                 $count = 0;
                 foreach($items as $item) {
-                    if(count(User::find($user['id'])->items->where('categoryID', $value['id'])->where('pivot.deleted_at', null)->where('pivot.id', $item['user_itemID'])) > 0) {
-                        $count++;
+                    if($item['isWashed'] != 1) {
+                        if(count(User::find($user['id'])->items->where('categoryID', $value['id'])->where('pivot.deleted_at', null)->where('pivot.id', $item['user_itemID'])) > 0) {
+                            $count++;
+                        }
                     }
                 }
                 $value['amount'] = $count;
