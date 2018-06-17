@@ -185,7 +185,7 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
-                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->where('deleted_at', null)->first();
                 if($item != null) {
                     array_push($items, $item);
                 }
