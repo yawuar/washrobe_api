@@ -46,7 +46,7 @@ class LaundryController extends Controller
                 $items = Laundry::get();
                 $count = 0;
                 foreach($items as $item) {
-                    if(count(User::find($user['id'])->items->where('categoryID', $value['id'])->where('pivot.id', $item['user_itemID'])) > 0) {
+                    if(count(User::find($user['id'])->items->where('categoryID', $value['id'])->where('pivot.deleted_at', null)->where('pivot.id', $item['user_itemID'])) > 0) {
                         $count++;
                     }
                 }
@@ -57,7 +57,7 @@ class LaundryController extends Controller
                     $items = Laundry::get();
                     $count = 0;
                     foreach($items as $item) {
-                        if(count(User::find($user['id'])->items->where('categoryID', $value['id'])->where('pivot.id', $item['user_itemID'])) > 0) {
+                        if(count(User::find($user['id'])->items->where('categoryID', $value['id'])->where('pivot.deleted_at', null)->where('pivot.id', $item['user_itemID'])) > 0) {
                             $count++;
                         }
                     }
@@ -271,12 +271,7 @@ class LaundryController extends Controller
     }
 
     public function countMachines(Request $request) {
-        return response()->json(['data' => $request->all()]);
-    }
-
-    public function updateWashCoinId($id) {
-        // Get laundry by user
-        $washroom = Laundry::where('isWashed', 0)->update(['coin_wash_id' => $id]);
-        return response()->json(['data' => $washroom]);
+        var_dump($request->all());
+        // return response()->json(['data' => $request->all()]);
     }
 }
