@@ -131,7 +131,7 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
-                $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->where('user_item.id', $laundryItem['user_itemID'])->first();
+                $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->first();
                 if($laundryItem != null) {
                     if(!in_array($laundryItem, $items)){
                         $bool = $this->checkIfInArray($laundryItem, $items);
