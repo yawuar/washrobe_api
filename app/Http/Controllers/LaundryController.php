@@ -185,7 +185,7 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
-                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->wherePivot('deleted_at', null)->first();
+                $item = User::find($user['id'])->items()->wherePivot('deleted_at', null)->wherePivot('id', $laundryItem['user_itemID'])->wherePivot('deleted_at', null)->first();
                 if($item != null) {
                     array_push($items, $item);
                 }
@@ -202,7 +202,7 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
-                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+                $item = User::find($user['id'])->items()->wherePivot('deleted_at', null)->wherePivot('id', $laundryItem['user_itemID'])->first();
                 if(isset($item->symbols)) {
                     $item['symbols'] = $item->symbols;
                     $color = explode(',', $item['color'])[0];
@@ -224,7 +224,7 @@ class LaundryController extends Controller
         $laundry = Laundry::get();
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
-                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+                $item = User::find($user['id'])->items()->wherePivot('deleted_at', null)->wherePivot('id', $laundryItem['user_itemID'])->first();
                 if(isset($item->symbols)) {
                     $item['symbols'] = $item->symbols;
                     $color = explode(',', $item['color'])[0];
@@ -252,8 +252,8 @@ class LaundryController extends Controller
 
         foreach($laundry as $laundryItem) {
             if(!$laundryItem['isWashed']) {
-                $item = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
-                $obj = User::find($user['id'])->items()->wherePivot('id', $laundryItem['user_itemID'])->first();
+                $item = User::find($user['id'])->items()->wherePivot('deleted_at', null)->wherePivot('id', $laundryItem['user_itemID'])->first();
+                $obj = User::find($user['id'])->items()->wherePivot('deleted_at', null)->wherePivot('id', $laundryItem['user_itemID'])->first();
 
                 if(isset($item->symbols)) {
                     $item['symbols'] = $item->symbols;
