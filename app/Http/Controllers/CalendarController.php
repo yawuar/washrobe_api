@@ -39,7 +39,7 @@ class CalendarController extends Controller
         $uiID = $request['user_itemID'];
         $date = $request['date'];
 
-        $item = CalendarItem::where('user_itemID', $uiID)->where('date', $date)->first();
+        $item = CalendarItem::where('user_itemID', $uiID)->whereDate('date', $date)->first();
         
         var_dump('hallo');
         if($item) {
