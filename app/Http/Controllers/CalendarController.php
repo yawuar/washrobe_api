@@ -35,13 +35,11 @@ class CalendarController extends Controller
     }
 
     public function removeItemFromCalendar(Request $request) {
-        var_dump($request->all());
         $uiID = $request['user_itemID'];
         $date = $request['date'];
 
         $item = CalendarItem::where('user_itemID', $uiID)->whereDate('date', $date)->first();
-        
-        var_dump('hallo');
+    
         if($item) {
             $item->delete();
         }
