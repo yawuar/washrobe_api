@@ -74,12 +74,13 @@ class LaundryController extends Controller
     public function putInLaundry($id) {
         $user = Auth::user();
         $items = User::find($user['id'])->items()->where('item_id', $id)->wherePivot('deleted_at', null)->get();
+        
         $message = [];
 
         $index = 0;
         $length = count($items);
 
-        // if there is only one item add in db
+        // // if there is only one item add in db
         if($length == 1) {
             $pivotID = $items[0]->pivot->id;
             $checkIfIsLaundry = Laundry::where('user_itemID', $pivotID)->where('isWashed', 0)->get();
@@ -97,7 +98,7 @@ class LaundryController extends Controller
             }
         }
         
-        // If there are more
+        // // If there are more
         if($length > 1) {
             if($index <= $length) {
                 for($i = 0; $i < $length; $i++) {
@@ -111,6 +112,7 @@ class LaundryController extends Controller
                             'message' => 'The item is successfully added to the laundry',
                             'alreadyInLaundry' => false
                         ]);
+                        break;
                     }
                 }
             } 
@@ -130,28 +132,32 @@ class LaundryController extends Controller
         $user = Auth::user();
         $items = [];
 
-        $laundry = Laundry::get();
+        $laundry = Laundry::where('isWashed', 0)->get();
         foreach($laundry as $laundryItem) {
-            if(!$laundryItem['isWashed']) {
-                // $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->first();
-                $itemsAmount = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->orderBy('items.id')->select('*', DB::raw('COUNT(*) as amountOfItems'))->groupBy('item_id')->get();
-                $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->get();
-                // if($laundryItem != null) {
-                //     if(!in_array($laundryItem, $items)){
-                //         $bool = $this->checkIfInArray($laundryItem, $items);
-                //         if(!$bool) {
-                //             $laundryItem['amountOfItems'] = 1;
-                //             array_push($items, $laundryItem);
-                //         } else {
-                //             $key = $this->returnKey($laundryItem, $items);
-                //             if($key > -1) {
-                //                 $items[$key]['amountOfItems'] += 1;
-                //             }   
-                //         }
-                //     }
+                $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->first();
+                // $itemsAmount = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->orderBy('items.id')->select('*', DB::raw('COUNT(*) as amountOfItems'))->groupBy('item_id')->first();
+                // $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->first();
+                // var_dump($items['name']);
+                // if(count($items) > 0) {
+                //     $itemsAmount[0]['symbols'] = $items[0]->symbols;
                 // }
 
-            }
+                // var_dump($itemsAmount[0]);
+                if($laundryItem != null) {
+                    if(!in_array($laundryItem, $items)){
+                        $bool = $this->checkIfInArray($laundryItem, $items);
+                        var_dump($bool);
+                        if(!$bool) {
+                            $laundryItem['amountOfItems'] = 1;
+                            array_push($items, $laundryItem);
+                        } else {
+                            $key = $this->returnKey($laundryItem, $items);
+                            if($key > -1) {
+                                $items[$key]['amountOfItems'] += 1;
+                            }   
+                        }
+                    }
+                }
         }
 
         return response()->json(['data' => $items]);
