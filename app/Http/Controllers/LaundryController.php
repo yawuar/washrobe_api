@@ -277,7 +277,7 @@ class LaundryController extends Controller
     }
 
     public function updateIsWashed($id) {
-        $item = Laundry::where('id', $id)->update(['isWashed' => 1]);
+        $item = Laundry::where('user_itemID', $id)->update(['isWashed' => 1]);
         return response()->json(['data' => $item]);
     }
 }
