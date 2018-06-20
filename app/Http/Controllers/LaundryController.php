@@ -134,19 +134,10 @@ class LaundryController extends Controller
 
         $laundry = Laundry::where('isWashed', 0)->get();
         foreach($laundry as $laundryItem) {
-                $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->first();
-                // $itemsAmount = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->orderBy('items.id')->select('*', DB::raw('COUNT(*) as amountOfItems'))->groupBy('item_id')->first();
-                // $items = User::find($user['id'])->items()->where('categoryID', '=', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->first();
-                // var_dump($items['name']);
-                // if(count($items) > 0) {
-                //     $itemsAmount[0]['symbols'] = $items[0]->symbols;
-                // }
-
-                // var_dump($itemsAmount[0]);
+            $laundryItem = User::find($user['id'])->items()->where('categoryID', $id)->wherePivot('deleted_at', null)->where('user_item.id', $laundryItem['user_itemID'])->first();
                 if($laundryItem != null) {
                     if(!in_array($laundryItem, $items)){
                         $bool = $this->checkIfInArray($laundryItem, $items);
-                        var_dump($bool);
                         if(!$bool) {
                             $laundryItem['amountOfItems'] = 1;
                             array_push($items, $laundryItem);
